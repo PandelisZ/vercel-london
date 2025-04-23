@@ -11,7 +11,8 @@
   "dependencies": {
     "react": "*",
     "react-dom": "*",
-    "next": "*"
+    "next": "*",
+    "framer-motion": "*"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
