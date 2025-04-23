@@ -23,7 +23,7 @@ export default function Slide1() {
 
   return (
     <motion.div
-      className="flex flex-col gap-10 items-center justify-center min-h-[70vh] py-20 relative"
+      className="flex flex-col gap-10 items-center justify-center min-h-[70vh] py-16 relative max-w-xl mx-auto"
       variants={containerVariants}
       initial="hidden"
       animate="visible"
@@ -76,7 +76,7 @@ export default function Slide1() {
           >
             <motion.h1
               variants={itemVariants}
-              className="text-center text-4xl md:text-6xl font-black cursor-pointer relative tracking-tight"
+              className="text-center text-4xl md:text-6xl font-black cursor-pointer relative tracking-tight max-w-xl mx-auto"
             >
               <span className="relative inline-block">
                 Abusing vercel&apos;s CI 
@@ -130,9 +130,9 @@ export default function Slide1() {
               stiffness: 300, 
               damping: 20 
             }}
-            className="text-center"
+            className="text-center max-w-xl mx-auto"
           >
-            <h1 className="text-3xl md:text-5xl font-bold mb-6 tracking-tight leading-tight">
+            <h1 className="text-3xl md:text-5xl font-bold mb-6 tracking-tight leading-tight max-w-xl mx-auto">
               How We Built a{" "}
               <motion.span 
                 className="bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 bg-clip-text text-transparent animate-gradient inline-block"
@@ -168,7 +168,7 @@ export default function Slide1() {
 
       <motion.div 
         variants={itemVariants}
-        className="text-md text-gray-500 tracking-wide mt-10 text-center absolute bottom-8"
+        className="text-md text-gray-500 tracking-wide mt-10 text-center absolute bottom-8 max-w-xl mx-auto"
       >
         <span className="opacity-70 flex items-center gap-2">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

@@ -71,7 +71,7 @@ export default function Slide3() {
 
   return (
     <motion.div 
-      className="flex flex-col items-center justify-center min-h-[70vh] py-16 relative"
+      className="flex flex-col items-center justify-center min-h-[70vh] py-16 relative max-w-xl mx-auto"
       variants={containerVariants}
       initial="hidden"
       animate="visible"
@@ -112,7 +112,7 @@ export default function Slide3() {
       
       <motion.h2
         variants={itemVariants}
-        className="text-white/90 text-3xl md:text-5xl font-bold mb-8 text-center leading-tight tracking-tight"
+        className="text-white/90 text-3xl md:text-5xl font-bold mb-8 text-center leading-tight tracking-tight max-w-xl mx-auto"
       >
         CI powers{" "}
         <motion.span 
@@ -138,7 +138,7 @@ export default function Slide3() {
       </motion.h2>
       
       <motion.div
-        className="w-full max-w-xl md:max-w-2xl bg-neutral-900/80 border border-neutral-700 rounded-lg px-8 py-6 shadow-xl font-mono text-green-300 text-lg min-h-[240px] relative overflow-hidden terminal-shadow"
+        className="w-full max-w-xl mx-auto bg-neutral-900/80 border border-neutral-700 rounded-lg px-8 py-6 shadow-xl font-mono text-green-300 text-lg min-h-[240px] relative overflow-hidden terminal-shadow"
         variants={itemVariants}
         animate={controls}
         transition={{ 
@@ -212,7 +212,7 @@ export default function Slide3() {
       <AnimatePresence>
         {showInsight && (
           <motion.div 
-            className="mt-10 max-w-xl"
+            className="mt-10 max-w-xl mx-auto"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.5 }}

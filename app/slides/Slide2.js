@@ -28,7 +28,7 @@ export default function Slide2() {
 
   return (
     <motion.div 
-      className="flex flex-col items-center justify-center gap-12 min-h-[70vh] py-20 relative"
+      className="flex flex-col items-center justify-center gap-12 min-h-[70vh] py-20 relative max-w-xl mx-auto"
       variants={containerVariants}
       initial="hidden"
       animate="visible"
@@ -65,7 +65,7 @@ export default function Slide2() {
 
       <motion.h2
         variants={itemVariants}
-        className="text-3xl md:text-5xl font-black mb-5 tracking-tight relative"
+        className="text-3xl md:text-5xl font-black mb-5 tracking-tight relative max-w-xl mx-auto"
       >
         Who is{" "}
         <motion.span 
@@ -98,7 +98,7 @@ export default function Slide2() {
 
       <motion.div
         variants={itemVariants}
-        className="flex flex-col gap-5 max-w-2xl"
+        className="flex flex-col gap-5 max-w-xl"
       >
         <motion.div 
           className="p-6 bg-white/5 rounded-xl border border-white/10 backdrop-blur-sm"

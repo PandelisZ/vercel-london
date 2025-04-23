@@ -147,9 +147,11 @@ export default function Slides() {
           initial="enter"
           animate="center"
           exit="exit"
-          className="w-full max-w-3xl md:max-w-4xl px-6 py-12"
+          className="w-full max-w-xl mx-auto px-4 py-10"
         >
-          <Current />
+          <div className="w-full max-w-xl mx-auto">
+            <Current />
+          </div>
         </motion.div>
       </AnimatePresence>
     </div>
