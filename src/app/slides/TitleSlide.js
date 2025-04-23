@@ -1,136 +1,127 @@
 import Image from "next/image";
 "use client";
-import { useState, Suspense } from "react";
-import dynamic from "next/dynamic";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
 
-// Dynamically import slides for code-splitting
-const slides = [
-  dynamic(() => import("./slides/TitleSlide"), { ssr: false }),
-  dynamic(() => import("./slides/CosineSlide"), { ssr: false }),
-  dynamic(() => import("./slides/CITerminalSlide"), { ssr: false }),
-];
-
-export default function Presentation() {
-  const [slideIndex, setSlideIndex] = useState(0);
-
-  const goToNext = () => {
-    if (slideIndex < slides.length - 1) setSlideIndex(slideIndex + 1);
-  };
-  const goToPrev = () => {
-    if (slideIndex > 0) setSlideIndex(slideIndex - 1);
-  };
-
-  const CurrentSlide = slides[slideIndex];
+export default function TitleSlide({ onNext }) {
+  const [crossed, setCrossed] = useState(false);
 
   return (
     <div
       style={{
-        width: "100vw",
-        height: "100vh",
+        textAlign: "center",
+        width: "100%",
+        cursor: "pointer",
+        userSelect: "none",
+        padding: "2rem 0",
         display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        background: "black",
-        overflow: "hidden",
-        position: "relative",
+        flexDirection: "column",
+        gap: "3rem",
+      }}
+      onClick={() => {
+        if (!crossed) setCrossed(true);
+        else if (onNext) onNext(); // advance if once crossed out
       }}
     >
       <AnimatePresence mode="wait">
-        <Suspense
-          fallback={
-            <motion.div
-              key={"loader"}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              style={{
-                color: "white",
-                fontSize: "2rem",
-                textAlign: "center",
-              }}
-            >
-              Loading...
-            </motion.div>
-          }
-        >
-          <motion.div
-            key={slideIndex}
-            initial={{ opacity: 0, y: 60, scale: 0.98 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -60, scale: 1.02 }}
+        {!crossed ? (
+          <motion.h1
+            key="main-title"
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{
+              opacity: 0,
+              y: -20,
+              transition: { duration: 0.3, ease: "easeInOut" },
+            }}
             transition={{ duration: 0.6, type: "spring" }}
             style={{
-              width: "80vw",
-              maxWidth: 800,
-              minHeight: 400,
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
+              fontSize: "2.2rem",
+              color: "white",
+              fontWeight: 700,
+              margin: 0,
               position: "relative",
+              display: "inline-block",
+              paddingBottom: "0.5rem",
             }}
           >
-            <CurrentSlide
-              onNext={goToNext}
-              onPrev={goToPrev}
-              isLast={slideIndex === slides.length - 1}
-              isFirst={slideIndex === 0}
-            />
-          </motion.div>
-        </Suspense>
+            Abusing vercel&apos;s CI for fun and for profit
+            {/* Cross-out effect, to appear on click */}
+            {crossed && (
+              <motion.span
+                initial={{ scaleX: 0 }}
+                animate={{ scaleX: 1 }}
+                transition={{
+                  duration: 0.5,
+                  type: "spring",
+                  delay: 0.15,
+                }}
+                style={{
+                  position: "absolute",
+                  left: 0,
+                  top: "53%",
+                  width: "100%",
+                  height: 5,
+                  background: "red",
+                  borderRadius: 4,
+                  zIndex: 2,
+                  transformOrigin: "left center",
+                  pointerEvents: "none",
+                }}
+                layoutId="cross"
+              />
+            )}
+          </motion.h1>
+        ) : (
+          <motion.h1
+            key="subtitle"
+            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10, scale: 1.07 }}
+            style={{
+              fontSize: "2rem",
+              fontWeight: 700,
+              color: "#fff",
+              background:
+                "linear-gradient(90deg, #f81ce5 25%, #7928ca 80%, #00cfff 100%)",
+              backgroundClip: "text",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+            }}
+          >
+            How We Built a Smarter Dev Agent Using Vercel CI
+          </motion.h1>
+        )}
       </AnimatePresence>
-
-      {/* Navigation arrows */}
-      <div
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: crossed ? 0.5 : 1, y: 0 }}
+        exit={{}}
+        transition={{ duration: 0.8, delay: 0.3 }}
         style={{
-          position: "absolute",
-          bottom: 36,
-          left: 0,
-          width: "100vw",
-          display: "flex",
-          justifyContent: "space-between",
-          padding: "0 3vw",
-          pointerEvents: "none",
+          fontWeight: 500,
+          letterSpacing: 0.1,
+          color: "#aaa",
+          fontSize: "1.1rem",
         }}
       >
-        <button
-          aria-label="Previous"
-          onClick={goToPrev}
-          disabled={slideIndex === 0}
-          style={{
-            pointerEvents: "auto",
-            opacity: slideIndex === 0 ? 0.2 : 0.8,
-            background: "none",
-            border: "none",
-            color: "#fff",
-            fontSize: 32,
-            cursor: "pointer",
-            transition: "opacity 0.2s",
-            userSelect: "none",
-          }}
-        >
-          ◀
-        </button>
-        <button
-          aria-label="Next"
-          onClick={goToNext}
-          disabled={slideIndex === slides.length - 1}
-          style={{
-            pointerEvents: "auto",
-            opacity: slideIndex === slides.length - 1 ? 0.2 : 0.8,
-            background: "none",
-            border: "none",
-            color: "#fff",
-            fontSize: 32,
-            cursor: "pointer",
-            transition: "opacity 0.2s",
-            userSelect: "none",
-          }}
-        >
-          ▶
-        </button>
-      </div>
+        @PandelisZ
+      </motion.div>
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.85, delay: 0.45 }}
+        style={{
+          marginTop: "1.6rem",
+          color: "#555",
+          fontStyle: "italic",
+          fontSize: "0.98rem",
+        }}
+      >
+        <span>
+          <span style={{ color: "#888" }}>Click the title</span> to cross out!
+        </span>
+      </motion.div>
     </div>
   );
 }

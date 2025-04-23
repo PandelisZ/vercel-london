@@ -1,136 +1,71 @@
 import Image from "next/image";
 "use client";
-import { useState, Suspense } from "react";
-import dynamic from "next/dynamic";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 
-// Dynamically import slides for code-splitting
-const slides = [
-  dynamic(() => import("./slides/TitleSlide"), { ssr: false }),
-  dynamic(() => import("./slides/CosineSlide"), { ssr: false }),
-  dynamic(() => import("./slides/CITerminalSlide"), { ssr: false }),
-];
-
-export default function Presentation() {
-  const [slideIndex, setSlideIndex] = useState(0);
-
-  const goToNext = () => {
-    if (slideIndex < slides.length - 1) setSlideIndex(slideIndex + 1);
-  };
-  const goToPrev = () => {
-    if (slideIndex > 0) setSlideIndex(slideIndex - 1);
-  };
-
-  const CurrentSlide = slides[slideIndex];
-
+export default function CosineSlide({ onNext }) {
   return (
     <div
       style={{
-        width: "100vw",
-        height: "100vh",
+        textAlign: "center",
+        width: "100%",
+        padding: "2rem 0",
         display: "flex",
+        flexDirection: "column",
         alignItems: "center",
-        justifyContent: "center",
-        background: "black",
-        overflow: "hidden",
-        position: "relative",
+        gap: "2.5rem",
       }}
+      onClick={onNext}
     >
-      <AnimatePresence mode="wait">
-        <Suspense
-          fallback={
-            <motion.div
-              key={"loader"}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              style={{
-                color: "white",
-                fontSize: "2rem",
-                textAlign: "center",
-              }}
-            >
-              Loading...
-            </motion.div>
-          }
-        >
-          <motion.div
-            key={slideIndex}
-            initial={{ opacity: 0, y: 60, scale: 0.98 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -60, scale: 1.02 }}
-            transition={{ duration: 0.6, type: "spring" }}
-            style={{
-              width: "80vw",
-              maxWidth: 800,
-              minHeight: 400,
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-              position: "relative",
-            }}
-          >
-            <CurrentSlide
-              onNext={goToNext}
-              onPrev={goToPrev}
-              isLast={slideIndex === slides.length - 1}
-              isFirst={slideIndex === 0}
-            />
-          </motion.div>
-        </Suspense>
-      </AnimatePresence>
-
-      {/* Navigation arrows */}
-      <div
+      <motion.h2
+        initial={{ opacity: 0, y: 40, rotate: 5 }}
+        animate={{ opacity: 1, y: 0, rotate: 0 }}
+        transition={{ duration: 0.7, type: "spring" }}
         style={{
-          position: "absolute",
-          bottom: 36,
-          left: 0,
-          width: "100vw",
-          display: "flex",
-          justifyContent: "space-between",
-          padding: "0 3vw",
-          pointerEvents: "none",
+          fontSize: "1.8rem",
+          fontWeight: 700,
+          background: "linear-gradient(90deg, #fff 50%, #f81ce5 100%)",
+          color: "transparent",
+          backgroundClip: "text",
+          WebkitBackgroundClip: "text",
+          WebkitTextFillColor: "transparent",
+          marginBottom: "1.2rem",
         }}
       >
-        <button
-          aria-label="Previous"
-          onClick={goToPrev}
-          disabled={slideIndex === 0}
-          style={{
-            pointerEvents: "auto",
-            opacity: slideIndex === 0 ? 0.2 : 0.8,
-            background: "none",
-            border: "none",
-            color: "#fff",
-            fontSize: 32,
-            cursor: "pointer",
-            transition: "opacity 0.2s",
-            userSelect: "none",
-          }}
-        >
-          ◀
-        </button>
-        <button
-          aria-label="Next"
-          onClick={goToNext}
-          disabled={slideIndex === slides.length - 1}
-          style={{
-            pointerEvents: "auto",
-            opacity: slideIndex === slides.length - 1 ? 0.2 : 0.8,
-            background: "none",
-            border: "none",
-            color: "#fff",
-            fontSize: 32,
-            cursor: "pointer",
-            transition: "opacity 0.2s",
-            userSelect: "none",
-          }}
-        >
-          ▶
-        </button>
-      </div>
+        Who is cosine.sh?
+      </motion.h2>
+      <motion.div
+        initial={{ opacity: 0, y: 40, scale: 0.9 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ duration: 0.75, delay: 0.2, type: "spring" }}
+        style={{
+          fontSize: "1.12rem",
+          maxWidth: 650,
+          lineHeight: 1.75,
+          color: "#fff",
+          background: "rgba(26,26,26,0.80)",
+          borderRadius: "16px",
+          padding: "2rem",
+          margin: "0 auto",
+          boxShadow: "0 2px 32px 0 #0f0f1f44",
+          border: "1px solid #24182e",
+        }}
+      >
+        <strong>cosine.sh</strong> is a company dedicated to building smarter developer tools and agents.<br /><br />
+        We combine cutting-edge AI, robust infrastructure, and modern dev workflows to help teams build, test, and ship software <span style={{ color: "#f81ce5" }}>faster</span> and <span style={{ color: "#50fa7b" }}>smarter</span>.<br/><br/>
+        From AI-powered CI/CD to creative developer automation, we're pioneering the future of software delivery.
+      </motion.div>
+      <motion.div
+        initial={{ opacity: 0, y: 28 }}
+        animate={{ opacity: 0.7, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.6 }}
+        style={{
+          color: "#b6b6b6",
+          fontSize: "0.95rem",
+          marginTop: "2rem",
+        }}
+      >
+        (Click anywhere to continue)
+      </motion.div>
     </div>
   );
 }

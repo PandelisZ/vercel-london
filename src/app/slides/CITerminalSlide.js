@@ -1,137 +1,148 @@
 import Image from "next/image";
 "use client";
-import { useState, Suspense } from "react";
-import dynamic from "next/dynamic";
-import { AnimatePresence, motion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import { motion } from "framer-motion";
 
-// Dynamically import slides for code-splitting
-const slides = [
-  dynamic(() => import("./slides/TitleSlide"), { ssr: false }),
-  dynamic(() => import("./slides/CosineSlide"), { ssr: false }),
-  dynamic(() => import("./slides/CITerminalSlide"), { ssr: false }),
+// Some terminal prompt lines for animation
+const terminalScript = [
+  "$ git push origin main",
+  "🚀 Vercel CI detected. Starting build...",
+  "🔍 Checking environment and secrets...",
+  "🧠 Loading dev agent...",
+  "🤖 Agent: Running tests...",
+  "✔️ 12 tests passed",
+  "✨ Deploy complete! Powered by AI Agents.",
+  "",
+  "Ready for your next commit...",
 ];
 
-export default function Presentation() {
-  const [slideIndex, setSlideIndex] = useState(0);
+export default function CITerminalSlide({ onNext }) {
+  const [linesShown, setLinesShown] = useState(0);
+  const timerRef = useRef();
 
-  const goToNext = () => {
-    if (slideIndex < slides.length - 1) setSlideIndex(slideIndex + 1);
-  };
-  const goToPrev = () => {
-    if (slideIndex > 0) setSlideIndex(slideIndex - 1);
-  };
-
-  const CurrentSlide = slides[slideIndex];
+  useEffect(() => {
+    if (linesShown < terminalScript.length) {
+      timerRef.current = setTimeout(() => setLinesShown(s => s + 1), 850 - 40*linesShown);
+    }
+    return () => clearTimeout(timerRef.current);
+  }, [linesShown]);
 
   return (
     <div
+      tabIndex={0}
       style={{
-        width: "100vw",
-        height: "100vh",
         display: "flex",
+        width: "100%",
+        flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        background: "black",
-        overflow: "hidden",
-        position: "relative",
+        minHeight: 400,
+        cursor: linesShown === terminalScript.length ? "pointer" : "default",
+        userSelect: "none",
+      }}
+      onClick={() => {
+        if (linesShown === terminalScript.length && onNext) onNext();
       }}
     >
-      <AnimatePresence mode="wait">
-        <Suspense
-          fallback={
-            <motion.div
-              key={"loader"}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              style={{
-                color: "white",
-                fontSize: "2rem",
-                textAlign: "center",
-              }}
-            >
-              Loading...
-            </motion.div>
-          }
-        >
-          <motion.div
-            key={slideIndex}
-            initial={{ opacity: 0, y: 60, scale: 0.98 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -60, scale: 1.02 }}
-            transition={{ duration: 0.6, type: "spring" }}
-            style={{
-              width: "80vw",
-              maxWidth: 800,
-              minHeight: 400,
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-              position: "relative",
-            }}
-          >
-            <CurrentSlide
-              onNext={goToNext}
-              onPrev={goToPrev}
-              isLast={slideIndex === slides.length - 1}
-              isFirst={slideIndex === 0}
-            />
-          </motion.div>
-        </Suspense>
-      </AnimatePresence>
-
-      {/* Navigation arrows */}
-      <div
+      <motion.h2
+        initial={{ opacity: 0, y: 35, scale: 0.93 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ duration: 0.8, type: "spring" }}
         style={{
-          position: "absolute",
-          bottom: 36,
-          left: 0,
-          width: "100vw",
-          display: "flex",
-          justifyContent: "space-between",
-          padding: "0 3vw",
-          pointerEvents: "none",
+          color: "#fff",
+          fontWeight: 700,
+          fontSize: "1.62rem",
+          marginBottom: "1.4rem",
         }}
       >
-        <button
-          aria-label="Previous"
-          onClick={goToPrev}
-          disabled={slideIndex === 0}
-          style={{
-            pointerEvents: "auto",
-            opacity: slideIndex === 0 ? 0.2 : 0.8,
-            background: "none",
-            border: "none",
-            color: "#fff",
-            fontSize: 32,
-            cursor: "pointer",
-            transition: "opacity 0.2s",
-            userSelect: "none",
-          }}
-        >
-          ◀
-        </button>
-        <button
-          aria-label="Next"
-          onClick={goToNext}
-          disabled={slideIndex === slides.length - 1}
-          style={{
-            pointerEvents: "auto",
-            opacity: slideIndex === slides.length - 1 ? 0.2 : 0.8,
-            background: "none",
-            border: "none",
-            color: "#fff",
-            fontSize: 32,
-            cursor: "pointer",
-            transition: "opacity 0.2s",
-            userSelect: "none",
-          }}
-        >
-          ▶
-        </button>
-      </div>
+        CI is the Heart of Developer Agents
+      </motion.h2>
+      <motion.div
+        initial={{ opacity: 0, y: 32 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.95, delay: 0.25 }}
+        style={{
+          background: "linear-gradient(145deg, #070707 70%, #24182e 100%)",
+          borderRadius: "14px",
+          border: "1.2px solid #272727",
+          boxShadow: "0 4px 40px #1a1a3344",
+          color: "#d6ffe6",
+          padding: "1.34rem 2.2rem 1.5rem 2.2rem",
+          fontFamily: "Menlo, Monaco, 'Cascadia Mono', 'Consolas', monospace",
+          fontSize: "1.11rem",
+          minWidth: 320,
+          maxWidth: 610,
+          whiteSpace: "pre-wrap",
+          minHeight: 270,
+        }}
+      >
+        {terminalScript.slice(0, linesShown).map((line, idx) => (
+          <motion.div
+            key={line + idx}
+            initial={{ opacity: 0, x: -16 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.4, delay: 0.04 * idx }}
+            style={{
+              minHeight: 20,
+              color:
+                idx === 0
+                  ? "#50fa7b"
+                  : line.startsWith("$") || line.startsWith("Ready")
+                  ? "#fff"
+                  : line.includes("Agent")
+                  ? "#00cfff"
+                  : line.includes("passed")
+                  ? "#50fa7b"
+                  : line.includes("error")
+                  ? "#ff5555"
+                  : "#aab",
+            }}
+          >
+            {line}
+            {idx === linesShown - 1 && linesShown !== terminalScript.length && (
+              <Cursor />
+            )}
+          </motion.div>
+        ))}
+      </motion.div>
+      <motion.div
+        initial={{ opacity: 0, y: 24 }}
+        animate={{
+          opacity: linesShown === terminalScript.length ? 0.7 : 0.15,
+          y: 0,
+        }}
+        transition={{ duration: 0.7, delay: 1.25 }}
+        style={{
+          color: "#b6b6b6",
+          fontSize: "0.95rem",
+          marginTop: "1.6rem",
+        }}
+      >
+        {linesShown === terminalScript.length ? "(Click anywhere to continue)" : "Running..."}
+      </motion.div>
     </div>
+  );
+}
+
+// Animated blinking terminal cursor
+function Cursor() {
+  return (
+    <motion.span
+      style={{
+        display: "inline-block",
+        background: "#fff",
+        marginLeft: 2,
+        width: 10,
+        height: "1.15em",
+        borderRadius: 2,
+        verticalAlign: "middle",
+        animation: "blink 1s step-end infinite",
+      }}
+      animate={{
+        opacity: [1, 0.33, 1],
+        transition: { repeat: Infinity, duration: 1.0, ease: "easeInOut" },
+      }}
+    ></motion.span>
   );
 }
 
