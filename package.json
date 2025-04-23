@@ -1,13 +1,21 @@
 {
-  "name": "your-project-name",
-  "version": "1.0.0",
+  "name": "vercel-london",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --turbopack",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "lint": "next lint"
   },
   "dependencies": {
-    "framer-motion": "*"
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-motion": "*",
+    "next": "15.3.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "tailwindcss": "^4"
   }
 }
