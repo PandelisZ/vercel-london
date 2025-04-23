@@ -9,9 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "react": "*",
-    "react-dom": "*",
-    "next": "*",
+    "react": "^19",
+    "react-dom": "^19",
+    "next": "^15",
     "framer-motion": "*"
   },
   "devDependencies": {
