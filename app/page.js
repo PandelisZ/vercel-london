@@ -1,5 +1,5 @@
 "use client";
-import { useState, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
 import Slide1 from "./slides/Slide1";
@@ -12,17 +12,86 @@ const slides = [
   Slide3,
 ];
 
+// Navigation arrows component
+const NavArrow = ({ direction, onClick }) => (
+  <motion.div 
+    className={`slide-nav ${direction === 'left' ? 'prev' : 'next'}`}
+    onClick={onClick}
+    whileHover={{ scale: 1.1 }}
+    whileTap={{ scale: 0.9 }}
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{ duration: 0.3 }}
+  >
+    <svg 
+      width="20" 
+      height="20" 
+      viewBox="0 0 24 24" 
+      fill="none" 
+      xmlns="http://www.w3.org/2000/svg"
+      style={{ transform: direction === 'left' ? 'rotate(180deg)' : 'none' }}
+    >
+      <path 
+        d="M9 6L15 12L9 18" 
+        stroke="white" 
+        strokeWidth="2" 
+        strokeLinecap="round" 
+        strokeLinejoin="round"
+      />
+    </svg>
+  </motion.div>
+);
+
+// Progress dots component
+const ProgressDots = ({ total, current, onDotClick }) => (
+  <div className="slide-dots">
+    {Array.from({ length: total }, (_, i) => (
+      <motion.div
+        key={i}
+        className={`slide-dot ${i === current ? 'active' : ''}`}
+        onClick={() => onDotClick(i)}
+        whileHover={{ scale: 1.3 }}
+        whileTap={{ scale: 0.9 }}
+        animate={{
+          scale: i === current ? 1.2 : 1,
+          backgroundColor: i === current ? 'rgba(255, 255, 255, 0.9)' : 'rgba(255, 255, 255, 0.3)'
+        }}
+        transition={{ duration: 0.2 }}
+      />
+    ))}
+  </div>
+);
+
 export default function Slides() {
   const [idx, setIdx] = useState(0);
+  const [exitDirection, setExitDirection] = useState("left");
+  const [enterDirection, setEnterDirection] = useState("right");
+
   const nextSlide = useCallback(() => {
-    setIdx((i) => Math.min(i + 1, slides.length - 1));
-  }, []);
+    if (idx < slides.length - 1) {
+      setExitDirection("left");
+      setEnterDirection("right");
+      setIdx(idx + 1);
+    }
+  }, [idx]);
+
   const prevSlide = useCallback(() => {
-    setIdx((i) => Math.max(i - 1, 0));
-  }, []);
+    if (idx > 0) {
+      setExitDirection("right");
+      setEnterDirection("left");
+      setIdx(idx - 1);
+    }
+  }, [idx]);
+  
+  const goToSlide = useCallback((slideIndex) => {
+    if (slideIndex === idx) return;
+    setExitDirection(slideIndex > idx ? "left" : "right");
+    setEnterDirection(slideIndex > idx ? "right" : "left");
+    setIdx(slideIndex);
+  }, [idx]);
 
   // Keyboard navigation
-  useCallback(() => {
+  useEffect(() => {
     const handler = (e) => {
       if (e.key === " " || e.key === "ArrowRight") nextSlide();
       if (e.key === "ArrowLeft") prevSlide();
@@ -33,17 +102,52 @@ export default function Slides() {
 
   const Current = slides[idx];
 
+  const slideVariants = {
+    enter: (direction) => ({
+      x: direction === "right" ? 70 : -70,
+      opacity: 0,
+      scale: 0.95,
+    }),
+    center: {
+      x: 0,
+      opacity: 1,
+      scale: 1,
+      transition: {
+        duration: 0.5,
+        type: "spring",
+        bounce: 0.2,
+      },
+    },
+    exit: (direction) => ({
+      x: direction === "left" ? -70 : 70,
+      opacity: 0,
+      scale: 0.95,
+      transition: {
+        duration: 0.4,
+      },
+    }),
+  };
+
   return (
-    <div className="flex items-center justify-center min-h-screen transition-colors duration-500 bg-black text-white select-none">
-      <AnimatePresence mode="wait">
+    <div className="flex items-center justify-center min-h-screen overflow-hidden bg-black text-white select-none">
+      {idx > 0 && <NavArrow direction="left" onClick={prevSlide} />}
+      {idx < slides.length - 1 && <NavArrow direction="right" onClick={nextSlide} />}
+      
+      <ProgressDots
+        total={slides.length}
+        current={idx}
+        onDotClick={goToSlide}
+      />
+      
+      <AnimatePresence initial={false} custom={exitDirection} mode="wait">
         <motion.div
           key={idx}
-          initial={{ opacity: 0, x: 90 }}
-          animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: -90 }}
-          transition={{ type: "spring", duration: 0.6 }}
-          className="w-full max-w-2xl md:max-w-3xl px-6"
-          onClick={nextSlide}
+          custom={enterDirection}
+          variants={slideVariants}
+          initial="enter"
+          animate="center"
+          exit="exit"
+          className="w-full max-w-3xl md:max-w-4xl px-6 py-12"
         >
           <Current />
         </motion.div>
