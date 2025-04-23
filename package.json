@@ -18,6 +18,6 @@
     "autoprefixer": "*",
     "postcss": "*",
     "tailwindcss": "*",
-    "@tailwindcss/postcss"
+    "@tailwindcss/postcss":"*"
   }
 }
