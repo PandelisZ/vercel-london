@@ -1,4 +1,26 @@
 import { Geist, Geist_Mono } from "next/font/google";
+export const metadata = {
+  title: "Abusing vercel's CI for fun and for profit",
+  description: 'A talk at a Vercel meetup by @PandelisZ',
+};
+
+export default function RootLayout({ children }) {
+  return (
+    <html lang="en">
+      <body
+        style={{
+          background: 'black',
+          color: 'white',
+          fontFamily: 'Inter, Arial, sans-serif',
+          minHeight: '100vh',
+          margin: 0,
+        }}
+      >
+        {children}
+      </body>
+    </html>
+  );
+}
 import "./globals.css";
 
 const geistSans = Geist({
