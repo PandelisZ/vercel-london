@@ -17,6 +17,7 @@
   "devDependencies": {
     "autoprefixer": "*",
     "postcss": "*",
-    "tailwindcss": "*"
+    "tailwindcss": "*",
+    "@tailwindcss/postcss"
   }
 }
