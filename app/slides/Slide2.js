@@ -28,7 +28,7 @@ export default function Slide2() {
 
   return (
     <motion.div 
-      className="flex flex-col items-center justify-center gap-12 min-h-[70vh] py-20 relative max-w-xl mx-auto"
+      className="flex flex-col items-center justify-center gap-12 min-h-[70vh] py-20 relative max-w-[500px] mx-auto"
       variants={containerVariants}
       initial="hidden"
       animate="visible"
