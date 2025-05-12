@@ -1,0 +1,133 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=JetBrains+Mono:wght@400;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 255, 255, 255;
+  --background-rgb: 0, 0, 0;
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: rgb(var(--background-rgb));
+  overflow-x: hidden;
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-feature-settings: "ss01", "ss02", "cv01", "cv02";
+}
+
+.animate-gradient {
+  background-size: 200% 200%;
+  animation: gradient 8s ease infinite;
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.typewriter {
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: 3px solid rgba(255, 255, 255, 0.7);
+  animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+}
+
+@keyframes typing {
+  from { width: 0 }
+  to { width: 100% }
+}
+
+@keyframes blink-caret {
+  from, to { border-color: transparent }
+  50% { border-color: rgba(255, 255, 255, 0.7) }
+}
+
+.glow {
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+.terminal-shadow {
+  box-shadow: 0 0 20px rgba(59, 230, 94, 0.1);
+}
+
+.slide-dots {
+  display: flex;
+  position: fixed;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  gap: 10px;
+  z-index: 20;
+}
+
+.slide-dot {
+  width: 12px;
+  height: 12px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.slide-dot.active {
+  background: rgba(255, 255, 255, 0.9);
+  transform: scale(1.2);
+}
+
+.slide-nav {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(10, 10, 10, 0.5);
+  backdrop-filter: blur(5px);
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 20;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.2s ease;
+}
+
+.slide-nav:hover {
+  background: rgba(30, 30, 30, 0.7);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.slide-nav.prev {
+  left: 20px;
+}
+
+.slide-nav.next {
+  right: 20px;
+}
+
+.vercel-grid {
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 40px 40px;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
+
+/* Mono font utility */
+.font-mono {
+  font-family: 'JetBrains Mono', 'SFMono-Regular', Menlo, Monaco, Consolas, monospace !important;
+}
